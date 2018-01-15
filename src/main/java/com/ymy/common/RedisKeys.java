@@ -15,6 +15,10 @@ public class RedisKeys {
      * 批次用户列表
      */
     public static String Se_Customer_Batch = "Se.Customer.Batch.";
+    /**
+     * 批次楼栋房间数量
+     */
+    public static String Hs_Num_House = "Hs.Num.House.";
 
     /**
      * 楼栋列表
