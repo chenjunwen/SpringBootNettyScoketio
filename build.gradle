@@ -1,0 +1,37 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.9.RELEASE'
+	}
+	repositories {
+		maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.ymy'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+}
+
+
+dependencies {
+	//compile('org.springframework.boot:spring-boot-starter-web')
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '1.0.0.RELEASE'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '1.5.9.RELEASE'
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile group: 'com.google.collections', name: 'google-collections', version: '1.0-rc2'
+	compile group: 'com.alibaba', name: 'fastjson', version:'1.2.8'
+	compile group: 'com.corundumstudio.socketio', name: 'netty-socketio', version: '1.7.7'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+
+
+}

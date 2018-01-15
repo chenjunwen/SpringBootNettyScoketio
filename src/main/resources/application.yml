@@ -1,0 +1,19 @@
+server:
+    port: 8080
+
+spring:
+    resources:
+        static-locations: classpath:/templates
+    redis:
+        database: 0
+        host: localhost
+        port: 6379
+        password: youming888
+        timeout: 100000
+        pool:
+            max-idle: 10   #最大空闲连接
+            max-active: 8   # 最大连接数
+            max-wait: -1  # 最大等待时间（使用负值表示没有限制）
+            min-idle: 0
+
+

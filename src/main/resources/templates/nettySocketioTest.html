@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NettySocketTest</title>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://cdn.bootcss.com/socket.io/2.0.4/socket.io.slim.js"></script>
+</head>
+<body>
+<div class="container-fluid" id="app">
+    <div class="row-fluid">
+        <div class="span12">
+            <h3 class="text-center text-info">
+                NettySocketio测试
+                <el-input placeholder="请输入用户名" v-model="formInline.userName">
+                    <template slot="prepend">用户名</template>
+                </el-input>
+                <el-input placeholder="请输入需要加入的房间号" v-model="formInline.roomNum">
+                    <template slot="prepend">房间号</template>
+                </el-input>
+            </h3>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>
+                        用户
+                    </th>
+                    <th>
+                        消息
+                    </th>
+                    <th>
+                        发送时间
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr class="success">
+                    <td>
+                        1
+                    </td>
+                    <td>
+                        TB - Monthly
+                    </td>
+                    <td>
+                        01/04/2012
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            用户发送消息
+        </div>
+        <div class="panel-body">
+            <el-form :inline="true" :model="formInline" class="demo-form-inline">
+                <el-form-item label="审批人" >
+                    <el-select v-model="formInline.toUserNames"  size="small" filterable multiple placeholder="请选择接收信息的用户">
+                        <el-option
+                                v-for="item in options"
+                                :key="item"
+                                :label="item"
+                                :value="item">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="发送的消息">
+                    <el-input v-model="formInline.message" @keyup.enter.native="onSubmit" size="small" placeholder="发送的消息"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">发送</el-button>
+                </el-form-item>
+            </el-form>
+
+        </div>
+    </div>
+    <el-button type="danger" @click="sendDisconnect">下线</el-button>
+    <el-button type="primary" @click="sendReConnect">重新️连接</el-button>
+</div>
+</body>
+
+
+<script>
+    var app =new Vue({
+        el: '#app',
+        data: {
+            message: 'Hello Vue!',
+            options:[],
+            status: "label-danger",
+            formInline:{
+                userName: "张三",
+                toUserNames: [],
+                message: "",
+                roomNum: 10001,
+            },
+            socket: null
+        },
+        created(){
+            this.initSocket();
+        },
+        methods: {
+            onSubmit(){
+                this.socket.emit("receiveMessageEvent", this.formInline)
+            },
+            sendDisconnect() {
+                this.socket.disconnect();
+            },
+            sendReConnect(){
+                //this.socket.open();
+                this.socket.disconnect();
+                this.initSocket()
+            },
+            initSocket(){
+                let userName = this.formInline.userName;
+                let roomNum = this.formInline.roomNum;
+                let socket = io.connect(`http://localhost:8081?userName=${userName}&roomNum=${roomNum}`,{
+                    reconnection: true, // 是否自动重新连接
+                    reconnectionAttempts: 5, // 放弃之前的重新连接尝试次数
+                    path: '/wbs'
+                });
+                const _this = this;
+                socket.on('connect', function(){
+                    _this.status = "label-success";
+                    _this.$message({
+                        message: `用户${userName}连接socket成功`,
+                        type: 'success'
+                    });
+                })
+
+
+                socket.on('systemEvent', function(data) {
+                    console.log(data)
+                    _this.options = data.userNames;
+                    _this.$notify({
+                        title: '系统消息',
+                        message: data.msg,
+                        type: 'success'
+                    });
+                });
+
+                socket.on("disconnect", function () {
+                    _this.status = "label-danger";
+                })
+                socket.on("message", function (data) {
+                    console.log(data, '---------message')
+                })
+                socket.on("sendMessage", function (data) {
+                    console.log(data,'-------')
+                    let time = new Date(data.time).toLocaleString()
+                    _this.$notify({
+                        title: data.userName,
+                        message: `${time}　　${data.msg}`,
+                    });
+                    console.log("接收到的数据：", data)
+                })
+
+                socket.on('reconnect', function() {
+                    console.log("重新连接到服务器");
+                });
+
+                socket.on('connect_error', function () {
+                    _this.$message.error(`用户${userName}连接socket失败`);
+                })
+                this.socket = socket;
+            }
+        }
+    })
+
+</script>
+</html>
