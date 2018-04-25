@@ -32,9 +32,12 @@ public class SubPubListener extends JedisPubSub {
             subPubWebSocket.sendMessage(message, Cmd.OrderBook);
         }else if (Cmd.HouseDeal.value().equals(channel)){
             subPubWebSocket.sendMessage(message, Cmd.HouseDeal);
-    }
+        }
 
     }
+
+
+
 
     /**
      * 初始化订阅时候的处理

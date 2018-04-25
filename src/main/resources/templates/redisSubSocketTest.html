@@ -24,7 +24,7 @@
     var websocket = null;
     //判断当前浏览器是否支持WebSocket
     if ('WebSocket' in window) {
-        websocket = new WebSocket("ws://localhost:8080/subWebSocket");
+        websocket = new WebSocket("ws://192.168.1.101:8080/subWebSocket");
         console.log(websocket)
     }
     else {

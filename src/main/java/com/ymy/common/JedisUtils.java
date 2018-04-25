@@ -12,10 +12,10 @@ import java.util.Map;
  */
 public class JedisUtils {
 
-    private static final String IP = "52.80.63.100";
-    //"52.80.63.100","127.0.0.1";
+    private static final String IP = "127.0.0.1";
+    //"52.80.63.100","127.0.0.1",193.112.46.224;
     private static final int PORT = 6379;
-    private static final String AUTH = "d5e848bf16e74388aec812e5f3d7b82e";
+    private static final String AUTH = "";
     //"d5e848bf16e74388aec812e5f3d7b82e","youming888";
     private static int MAX_ACTIVE = 1024;
     private static int MAX_IDLE = 200;
@@ -33,7 +33,9 @@ public class JedisUtils {
         config.setMaxIdle(MAX_IDLE);
         config.setMaxWaitMillis(MAX_WAIT);
         config.setTestOnBorrow(BORROW);
-        pool = new JedisPool(config, IP, PORT, TIMEOUT, AUTH);
+        //pool = new JedisPool(config, IP, PORT, TIMEOUT, AUTH);
+        System.out.println(IP);
+        pool = new JedisPool(config, IP, PORT);
     }
 
 
