@@ -16,7 +16,7 @@ public class KeyExpiredListener extends JedisPubSub{
     @Override
     public void onPMessage(String pattern, String channel, String message) {
         System.out.println("匹配表达式订阅： "
-                + pattern + " " + channel + " " + message);
+                + pattern + " ----->" + channel + "----->> " + message);
     }
 
     @Override

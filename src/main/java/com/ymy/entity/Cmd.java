@@ -14,9 +14,9 @@ public enum Cmd {
     HouseDeal("houseDeal"),
 
     /**
-     * 批次倒计时
+     * 在线人数
      */
-    CountDown("countDown");
+    OnlineNumber("onlineNumber");
 
     private String cmdStr;
 

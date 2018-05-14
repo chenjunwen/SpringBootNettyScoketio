@@ -35,7 +35,7 @@ public class RedisPublishTest {
         });*/
 
         // 过期key测试
-        executorService.execute(()->{
+        /*executorService.execute(()->{
             for (int i = 0; i < 1000 ; i++) {
                 String key = "test" + i;
                 jedis.setnx(key, i+"");
@@ -47,7 +47,13 @@ public class RedisPublishTest {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
+
+        String str = "St.LockRoom.f713f05cd6c949b1a438bae4173a286a";
+        System.out.println(str);
+        String key = str.substring(12);
+        System.out.println(key+"------");
+
         //executorService.shutdown();
 
     }

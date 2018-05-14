@@ -29,11 +29,15 @@ public class RedisPubSubTest {
         });*/
 
         // 订阅过期key
-        executorService.submit(()->{
+
+        executorService.execute(()->{
             System.out.println("2------>>");
             //"__key*__:*"          "__keyevent@0__:expired
             jedis.psubscribe(keyExpiredListener, "__key*__:expired");
         });
+        Thread.sleep(1000);
+        System.out.println("不走了");
+        jedis.close();
 
     }
 

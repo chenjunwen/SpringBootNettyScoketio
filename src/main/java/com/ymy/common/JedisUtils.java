@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public class JedisUtils {
 
-    private static final String IP = "127.0.0.1";
+    private static final String IP = "193.112.46.224";
     //"52.80.63.100","127.0.0.1",193.112.46.224;
     private static final int PORT = 6379;
     private static final String AUTH = "";

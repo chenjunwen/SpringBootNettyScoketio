@@ -64,7 +64,7 @@ public class SubPubListener extends JedisPubSub {
 /**
  * 线程启动监听
  */
-@Component
+//@Component
 class SubscribeThread extends Thread {
 
     SubPubListener subPubListener = new SubPubListener();
